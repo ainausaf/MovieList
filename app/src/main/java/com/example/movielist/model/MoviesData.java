@@ -1,9 +1,12 @@
 package com.example.movielist.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class MoviesData {
+public class MoviesData implements Parcelable {
 
     @SerializedName("title")
     @Expose
@@ -14,6 +17,28 @@ public class MoviesData {
     @SerializedName("id")
     @Expose
     private String id;
+
+    public MoviesData(Parcel in) {
+        title = in.readString();
+        image = in.readString();
+        id = in.readString();
+    }
+
+    public static final Creator<MoviesData> CREATOR = new Creator<MoviesData>() {
+        @Override
+        public MoviesData createFromParcel(Parcel in) {
+            return new MoviesData(in);
+        }
+
+        @Override
+        public MoviesData[] newArray(int size) {
+            return new MoviesData[size];
+        }
+    };
+
+    public MoviesData() {
+
+    }
 
     public String getTitle() {
         return title;
@@ -37,5 +62,17 @@ public class MoviesData {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(title);
+        dest.writeString(image);
+        dest.writeString(id);
     }
 }

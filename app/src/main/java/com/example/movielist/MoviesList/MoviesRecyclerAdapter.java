@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -26,13 +27,13 @@ public class MoviesRecyclerAdapter extends RecyclerView.Adapter<MoviesRecyclerAd
 
     private Context context;
     private List<MoviesData> movies;
-  //  private final OnItemClickListener listener;
+    private final OnItemClickListener listener;
 
 
-    public MoviesRecyclerAdapter(Context context, List<MoviesData> movies) {
+    public MoviesRecyclerAdapter(Context context, List<MoviesData> movies, OnItemClickListener listener) {
         this.context = context;
         this.movies = movies;
-      //  this.listener = listener;
+        this.listener = listener;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
@@ -70,7 +71,7 @@ public class MoviesRecyclerAdapter extends RecyclerView.Adapter<MoviesRecyclerAd
 
         viewHolder.movieName.setText(movie.getTitle());
 
-        //viewHolder.cardViewFeed.setOnClickListener(v -> listener.onItemClick(videos.get(viewHolder.getAdapterPosition())));
+        viewHolder.cardViewFeed.setOnClickListener(v -> listener.onItemClick(movies.get(viewHolder.getAdapterPosition())));
     }
 
     @Override
@@ -81,18 +82,13 @@ public class MoviesRecyclerAdapter extends RecyclerView.Adapter<MoviesRecyclerAd
         return 0;
     }
 
-    public void clear() {
-        int size = getItemCount();
-        notifyItemRangeRemoved(0, size);
-    }
-
     public void addAll(List<MoviesData> movies) {
         this.movies.addAll(movies);
         notifyDataSetChanged();
 
     }
 
-   /* public interface OnItemClickListener {
-        void onItemClick(Video video);
-    }*/
+    public interface OnItemClickListener {
+        void onItemClick(MoviesData movie);
+    }
 }

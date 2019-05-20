@@ -1,8 +1,12 @@
 package com.example.movielist.MoviesList;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
+import android.os.Parcelable;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,6 +16,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 
 import com.example.movielist.BaseActivity;
+import com.example.movielist.MovieDetails.MovieDetailsActivity;
 import com.example.movielist.R;
 import com.example.movielist.model.MoviesData;
 
@@ -46,16 +51,19 @@ public class MainActivity extends BaseActivity  implements  MainActivityContract
         ButterKnife.bind(this);
 
         initDaggerAppComponent();
-
-       getSupportActionBar().setDisplayShowHomeEnabled(true);
-       getSupportActionBar().setIcon(R.drawable.ic_launcher_foreground);
+        ActionBar actionbar = this.getSupportActionBar();
+        if(actionbar!=null) {
+            actionbar.setDisplayShowHomeEnabled(true);
+            actionbar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#1B2D1B")));
+            actionbar.setIcon(R.drawable.ic_launcher_foreground);
+        }
         movieList = new ArrayList<>();
         initViews();
         mainActivityPresenter.onCreate();
     }
 
     private void initViews() {
-        recyclerAdapter = new MoviesRecyclerAdapter(this, movieList);
+        recyclerAdapter = new MoviesRecyclerAdapter(this, movieList, movie -> startDetailsActivity(movie));
         recyclerView.setAdapter(recyclerAdapter);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
@@ -66,8 +74,10 @@ public class MainActivity extends BaseActivity  implements  MainActivityContract
     }
 
     // response to the on click event on the recycler view
-    private void startDetailsActivity() {
-       // mainActivityPresenter.getTutorialsData(video.getId());
+    private void startDetailsActivity(MoviesData movie) {
+      Intent i = new Intent(this, MovieDetailsActivity.class);
+      i.putExtra("movieDataforId", (Parcelable) movie);
+      startActivity(i);
     }
 
     public void getMoviesList(List<MoviesData> moviesListData){
@@ -87,14 +97,6 @@ public class MainActivity extends BaseActivity  implements  MainActivityContract
     public void showErrorMessage() {
         System.out.println("APP Crashed");
     }
-
-    //passing the list from the second API call to TutorialsFeedDetailsActivity
- /*   @Override
-    public void navigateToMovieDetails() {
-        Intent i = new Intent(this, TutorialFeedDetailsActivity.class);
-        i.putExtra("tutorialDetails", (Serializable) tutorialDetails);
-        startActivity(i);
-    }*/
 
     private void initDaggerAppComponent() {
         super.initDaggerComponent();

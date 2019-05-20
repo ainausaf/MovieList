@@ -4,12 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MoviesList.MainActivity">
+    tools:context=".MoviesList.MainActivity"
+    android:background="@color/cardview_dark_background">
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/recyclerView"/>
+        android:id="@+id/recyclerView" />
 
     <ProgressBar
         android:id="@+id/progressBar"

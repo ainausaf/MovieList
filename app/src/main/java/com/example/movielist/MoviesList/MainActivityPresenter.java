@@ -28,22 +28,6 @@ public class MainActivityPresenter implements MainActivityContract.Presenter {
         getMoviesData();
     }
 
- /*   // service call to get the list of the tutorials  detail
-    @Override
-    public void getTutorialsData(int videoId) {
-        view.showProgressBar(true);
-        Observable<List<TutorialDetail>> tutorialDetail = repository.getTutorialDetail(videoId);
-        tutorialDetail.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(videoTutorialDetail -> {
-                    view.showProgressBar(false);
-                    view.navigateToTutorialDetails(videoTutorialDetail);
-                }, throwable -> {
-                    view.showProgressBar(false);
-                    view.showErrorMessage();
-                });
-    }*/
-
     //service call is being made to retrieve the movies List
     public void getMoviesData() {
         final Observable<List<MoviesData>> moviesList= repository.getMoviesData();
